@@ -410,7 +410,7 @@ def fprop(input_batch, word_embedding_weights, embed_to_hid_weights,
     # hidden_layer_state = 1 / (1 - np.exp(-inputs_to_hidden_units))
 
     # (c)
-    # hidden_layer_state = 1 / (1 + np.exp(-inputs_to_hidden_units))
+    hidden_layer_state = 1 / (1 + np.exp(-inputs_to_hidden_units))
 
     # (d)
     # hidden_layer_state = -1 / (1 + np.exp(-inputs_to_hidden_units))
