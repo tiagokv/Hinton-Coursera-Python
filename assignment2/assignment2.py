@@ -148,14 +148,17 @@ def train(epochs):
             # FILL IN CODE. Replace the line below by one of the options.
             embed_to_hid_weights_gradient = np.zeros((numhid1 * numwords, numhid2))
 
+#            print("embedding_layer_state: " + str(embedding_layer_state.shape))
+#            print("back_propagated_deriv_1: " + str(back_propagated_deriv_1.shape))
+
             # Options:
             # (a)
             # embed_to_hid_weights_gradient = np.dot(
             #    np.transpose(back_propagated_deriv_1), embedding_layer_state)
 
             # (b)
-            # embed_to_hid_weights_gradient = np.dot(embedding_layer_state,
-            #                             np.transpose(back_propagated_deriv_1))
+            embed_to_hid_weights_gradient = np.dot(embedding_layer_state,
+                                         np.transpose(back_propagated_deriv_1))
 
             # (c)
             # embed_to_hid_weights_gradient = back_propagated_deriv_1
@@ -169,7 +172,7 @@ def train(epochs):
 
             # Options
             # (a)
-            # hid_bias_gradient = np.sum(back_propagated_deriv_1, axis=1)
+            hid_bias_gradient = np.sum(back_propagated_deriv_1, axis=1)
 
             # (b)
             # hid_bias_gradient = np.sum(back_propagated_deriv_1, axis=0)
@@ -186,10 +189,14 @@ def train(epochs):
             # FILL IN CODE. Replace the line below by one of the options.
             back_propagated_deriv_2 = np.zeros((numhid2, batchsize))
 
+#            print("back_propagated_deriv_2: " + str(back_propagated_deriv_2.shape))
+#            print("back_propagated_deriv_1: " + str(back_propagated_deriv_1.shape))
+#            print("embed_to_hid_weights: " + str(embed_to_hid_weights.shape))
+
             # Options
             # (a)
-            # back_propagated_deriv_2 = np.dot(embed_to_hid_weights,
-            #                                     back_propagated_deriv_1)
+            back_propagated_deriv_2 = np.dot(embed_to_hid_weights,
+                                                back_propagated_deriv_1)
 
             # (b)
             # back_propagated_deriv_2 = np.dot(back_propagated_deriv_1,
@@ -200,8 +207,8 @@ def train(epochs):
             #     np.transpose(back_propagated_deriv_1), embed_to_hid_weights)
 
             # (d)
-            # back_propagated_deriv_2 = np.dot(back_propagated_deriv_1,
-            #                           np.transpose(embed_to_hid_weights))
+#            back_propagated_deriv_2 = np.dot(back_propagated_deriv_1,
+#                                       np.transpose(embed_to_hid_weights))
 
 
             word_embedding_weights_gradient.fill(0)
@@ -423,10 +430,10 @@ def fprop(input_batch, word_embedding_weights, embed_to_hid_weights,
 
     # Options
     # (a)
-    # inputs_to_softmax = np.dot(np.transpose(hid_to_output_weights),
-    #                             hidden_layer_state)
-    # output_bias_tmp = np.tile(output_bias,(1,batchsize))
-    # inputs_to_softmax = inputs_to_softmax + output_bias_tmp
+    inputs_to_softmax = np.dot(np.transpose(hid_to_output_weights),
+                                 hidden_layer_state)
+    output_bias_tmp = np.tile(output_bias,(1,batchsize))
+    inputs_to_softmax = inputs_to_softmax + output_bias_tmp
 
     # (b)
     # inputs_to_softmax = np.dot(np.transpose(hid_to_output_weights),
