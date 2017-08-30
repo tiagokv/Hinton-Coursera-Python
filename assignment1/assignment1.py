@@ -106,18 +106,27 @@ def update_weights(neg_examples, pos_examples, w_current):
             the perceptron learning rule.
     '''
     w = w_current
+    
+    print(w.shape)
+    print(neg_examples)
+    print(pos_examples)
+    
     for i in range(neg_examples.shape[0]):
         this_case = neg_examples[i]
         activation = this_case.dot(w)
+        this_case = this_case.reshape((this_case.shape[0],1))
         if (activation >= 0):
             # YOUR CODE HERE
+            w += 1 * this_case * (0 - activation)
 
     for i in range(pos_examples.shape[0]):
         this_case = pos_examples[i]
         activation = this_case.dot(w)
+        this_case = this_case.reshape((this_case.shape[0], 1))
         if (activation < 0):
             # YOUR CODE HERE
-
+            w += 1 * this_case * (1 - activation)
+    
     return w
 
 
