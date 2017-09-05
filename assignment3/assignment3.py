@@ -213,9 +213,6 @@ def loss(model, data, wd_coefficient):
     # size: <number of classes, i.e. 10> by <number of data cases>
     class_prob = np.exp(log_class_prob)
 
-    #shiftx = class_input - np.max(class_input, axis = 1, keepdims = True)
-    #softmax_output = np.exp(shiftx)/np.sum(np.exp(shiftx), axis = 1, keepdims = True)
-    #log_class_prob = np.log(softmax_output)
     # select the right log class probability using that sum; then take the
     # mean over all data cases.
     classification_loss = -np.mean(np.sum(log_class_prob * data['targets'],
@@ -257,20 +254,15 @@ def d_loss_by_d_model(model, data, wd_coefficient):
     hid_output = logistic(hid_input)
     
     class_input = np.dot(model['hid_to_class'], hid_output)
-    
-    class_normalizer = log_sum_exp_over_rows(class_input)
 
-    # log of probability of each class. size: <number of classes, i.e. 10>
-    # by <number of data cases>
-    #softmax_output = class_input - \
-    #                 np.tile(class_normalizer, (class_input.shape[0], 1)) 
-    shiftx = class_input - np.max(class_input, axis = 1, keepdims = True)
-    softmax_output = np.exp(shiftx)/np.sum(np.exp(shiftx), axis = 1, keepdims = True)
+    shiftx = class_input - np.max(class_input, axis = 0, keepdims = True)
+   
+    softmax_output = np.exp(shiftx)/np.sum(np.exp(shiftx), axis = 0, keepdims = True)
+    
     classification_loss = - np.mean( np.sum(np.log(softmax_output) * data['targets'], axis = 0) )
     wd_loss = (wd_coefficient/2) * np.sum(model_to_theta(model)*model_to_theta(model))
     
     error = softmax_output - data['targets']
-    print("inputs shape:" + str(data['inputs'].shape))
     
     ret['hid_to_class'] += (1/data['inputs'].shape[1]) * np.dot(error, hid_output.T)
     
