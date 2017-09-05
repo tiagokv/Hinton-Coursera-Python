@@ -62,7 +62,7 @@ def train(epochs):
                     # which is sampled to get the initial weights; default = 0.01
 
     # VARIABLES FOR TRACKING TRAINING PROGRESS
-    show_training_CE_after = 100
+    show_training_CE_after = 500
     show_validation_CE_after = 1000
 
     # LOAD DATA
@@ -84,6 +84,9 @@ def train(epochs):
     word_embedding_weights = init_wt * np.random.randn(vocab_size, numhid1)
     embed_to_hid_weights = init_wt * np.random.randn(numwords * numhid1, numhid2)
     hid_to_output_weights = init_wt * np.random.randn(numhid2, vocab_size)
+#    word_embedding_weights = np.zeros((vocab_size, numhid1))
+#    embed_to_hid_weights   = np.zeros((numwords * numhid1, numhid2))
+#    hid_to_output_weights  = np.zeros((numhid2, vocab_size))
     hid_bias = np.zeros((numhid2,1))
     output_bias = np.zeros((vocab_size,1))
 
